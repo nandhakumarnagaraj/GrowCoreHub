@@ -43,7 +43,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<?> login( @RequestBody LoginRequest loginRequest) {
 		try {
 			Optional<User> userOpt = userService.findByEmail(loginRequest.getEmail());
 

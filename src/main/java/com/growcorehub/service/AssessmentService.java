@@ -5,14 +5,20 @@ import com.growcorehub.entity.Assessment;
 import com.growcorehub.entity.Project;
 import com.growcorehub.entity.User;
 import com.growcorehub.entity.UserAssessment;
+<<<<<<< HEAD
 import com.growcorehub.repository.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+=======
+import com.growcorehub.repository.AssessmentRepository;
+import com.growcorehub.repository.ProjectRepository;
+import com.growcorehub.repository.UserAssessmentRepository;
+import com.growcorehub.repository.UserRepository;
+>>>>>>> parent of ea94e5f (Assessment)
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,11 +38,17 @@ public class AssessmentService {
     @Autowired
     private UserRepository userRepository;
 
+<<<<<<< HEAD
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public Assessment createAssessment(AssessmentDto assessmentDto) {
         Project project = projectRepository.findById(assessmentDto.getProjectId())
                 .orElseThrow(() -> new RuntimeException("Project not found"));
+=======
+	public Assessment createAssessment(AssessmentDto assessmentDto) {
+		Project project = projectRepository.findById(assessmentDto.getProjectId())
+				.orElseThrow(() -> new RuntimeException("Project not found"));
+>>>>>>> parent of ea94e5f (Assessment)
 
         Assessment assessment = new Assessment();
         assessment.setProject(project);
@@ -58,6 +70,7 @@ public class AssessmentService {
         return assessmentRepository.findById(id).map(AssessmentDto::new);
     }
 
+<<<<<<< HEAD
     /**
      * Submit assessment with automatic score calculation
      * @param userId User ID
@@ -68,18 +81,29 @@ public class AssessmentService {
     public UserAssessment submitAssessment(Long userId, Long assessmentId, String answers) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+=======
+	public UserAssessment submitAssessment(Long userId, Long assessmentId, String answers, BigDecimal score) {
+		User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+>>>>>>> parent of ea94e5f (Assessment)
 
         Assessment assessment = assessmentRepository.findById(assessmentId)
                 .orElseThrow(() -> new RuntimeException("Assessment not found"));
 
+<<<<<<< HEAD
         // Check if user already took this assessment
         Optional<UserAssessment> existingAssessment = userAssessmentRepository
                 .findByUserIdAndAssessmentId(userId, assessmentId);
+=======
+		// Check if user already took this assessment
+		Optional<UserAssessment> existingAssessment = userAssessmentRepository.findByUserIdAndAssessmentId(userId,
+				assessmentId);
+>>>>>>> parent of ea94e5f (Assessment)
 
         if (existingAssessment.isPresent()) {
             throw new RuntimeException("User has already taken this assessment");
         }
 
+<<<<<<< HEAD
         // Calculate score based on answers
         BigDecimal calculatedScore = calculateScore(assessment, answers);
 
@@ -292,11 +316,21 @@ public class AssessmentService {
     public List<UserAssessment> getUserAssessments(Long userId) {
         return userAssessmentRepository.findByUserId(userId);
     }
+=======
+		UserAssessment userAssessment = new UserAssessment(user, assessment, score, answers);
+		return userAssessmentRepository.save(userAssessment);
+	}
+
+	public List<UserAssessment> getUserAssessments(Long userId) {
+		return userAssessmentRepository.findByUserId(userId);
+	}
+>>>>>>> parent of ea94e5f (Assessment)
 
     public Optional<UserAssessment> getUserAssessmentResult(Long userId, Long assessmentId) {
         return userAssessmentRepository.findByUserIdAndAssessmentId(userId, assessmentId);
     }
 
+<<<<<<< HEAD
     public void deleteAssessment(Long id) {
         assessmentRepository.deleteById(id);
     }
@@ -359,4 +393,9 @@ public class AssessmentService {
             this.passRate = passRate; 
         }
     }
+=======
+	public void deleteAssessment(Long id) {
+		assessmentRepository.deleteById(id);
+	}
+>>>>>>> parent of ea94e5f (Assessment)
 }
