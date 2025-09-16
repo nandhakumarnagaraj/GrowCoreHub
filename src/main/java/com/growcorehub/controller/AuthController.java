@@ -43,13 +43,13 @@ public class AuthController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<?> login( @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
 		try {
 			Optional<User> userOpt = userService.findByEmail(loginRequest.getEmail());
 
 			if (userOpt.isPresent()) {
 				User user = userOpt.get();
-				// Note: In production, use proper password hashing and verification
+				// Simple plain text password comparison (not recommended for production)
 				if (user.getPassword().equals(loginRequest.getPassword())) {
 					Map<String, Object> response = new HashMap<>();
 					response.put("success", true);

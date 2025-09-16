@@ -7,7 +7,6 @@ import com.growcorehub.entity.UserProfile;
 import com.growcorehub.repository.UserRepository;
 import com.growcorehub.repository.UserProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +21,6 @@ public class UserService {
 	@Autowired
 	private UserProfileRepository userProfileRepository;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-
 	public User createUser(RegisterRequest registerRequest) {
 		if (userRepository.existsByEmail(registerRequest.getEmail())) {
 			throw new RuntimeException("Email already exists");
@@ -32,7 +28,7 @@ public class UserService {
 
 		User user = new User();
 		user.setEmail(registerRequest.getEmail());
-		user.setPassword(passwordEncoder.encode(registerRequest.getPassword())); // Hash password
+		user.setPassword(registerRequest.getPassword());
 		user.setFirstName(registerRequest.getFirstName());
 		user.setLastName(registerRequest.getLastName());
 		user.setPhone(registerRequest.getPhone());
